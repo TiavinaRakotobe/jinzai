@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>ModeleWorkflowStepsValidator</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ modeleWorkflowStepsValidator.id }}</td>
+            </tr>
+            <tr>
+                <th>Createdat</th>
+                <td>{% if modeleWorkflowStepsValidator.createdAt %}{{ modeleWorkflowStepsValidator.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Updatedat</th>
+                <td>{% if modeleWorkflowStepsValidator.updatedAt %}{{ modeleWorkflowStepsValidator.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Enabled</th>
+                <td>{% if modeleWorkflowStepsValidator.enabled %}Yes{% else %}No{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('modeleworkflowstepsvalidator_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('modeleworkflowstepsvalidator_edit', { 'id': modeleWorkflowStepsValidator.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+            <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

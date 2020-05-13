@@ -1,0 +1,54 @@
+{% extends "::base.html.twig" %}
+{% block body %}
+    <body class="hold-transition skin-blue sidebar-mini fixed">
+        <div class="wrapper">
+            {% block header %}
+                {% include 'AppBundle::header.html.twig' %}
+            {% endblock %}
+            {% block siderbar %}
+			{% if app.user.firstConnected == 1 %}
+                {% include 'AppBundle::sidebar.html.twig' %}
+			{% endif %}
+            {% endblock %}
+            <!-- Content Wrapper. Contains page content -->
+            {% block content %}
+                <div class="content-wrapper">
+                    <!-- Content Header (Page header) -->
+                    {% block conten_header %}
+                        <section class="content-header">
+                            {% for type, messages in app.session.flashBag.all %}
+                                {% for message in messages %}
+                                    <div class="alert alert-{{ type }}" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                            <!--ol class="breadcrumb">
+                                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                                <li><a href="#">Forms</a></li>
+                                <li class="active">Advanced Elements</li>
+                            </ol-->
+                        </section>
+                    {% endblock %}
+                    {% block loader %}
+                        <div id="loading">
+                            <img src="{{ asset('bundles/app/img/loader.gif') }}"/>
+                        </div>
+                    {% endblock %}
+                    <!-- Main content -->
+                    {% block content_body %}
+                    {% endblock %}
+                    <!-- /.content -->
+                </div>
+                <!-- /.content-wrapper -->
+                {% block footer %}
+                    {% include 'AppBundle::footer.html.twig' %}
+                {% endblock %}
+            {% endblock %}
+            {#% block control_sidebar %}
+                {% include 'AppBundle::control_sidebar.html.twig' %}
+            {% endblock %#}
+        </div>
+    </body>
+{% endblock %}

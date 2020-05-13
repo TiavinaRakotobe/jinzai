@@ -1,0 +1,62 @@
+{% extends 'AppBundle::layout.html.twig' %}
+{% block content_body %}
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Détail de la demande</h3>
+            {% block box_tool %}{% endblock %}
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="col-md-4 control-group">Type demande :</label>
+                        <p class="col-md-4 control-group">{{ demandeRH.typeDemande.libelle }}</p>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="col-md-4 control-group">Demandeur :</label>
+                        <p class="col-md-4 control-group">{{ demandeRH.demandor.name }}</p>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="col-md-4 control-group">Commentaire :</label>
+                        <p class="col-md-4 control-group">{{ demandeRH.commentaire }}</p>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="col-md-4 control-group">Statut :</label>
+                        <p class="col-md-4 control-group">{{ demandeRH.demandeRhStatus|label_status_dc }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <span class="btn">
+                    <a href="{{ path('demanderh_index') }}">
+                        <span class="btn">
+                            <button type="button" name="retour" class="btn btn-default"><i class="fa fa-backward"></i>&nbsp;&nbsp;Retour</button>
+                        </span>
+                    </a>
+					{% if  demandeRH.demandeRhStatus == 0 %}
+                    <a href="{{ path('demanderh_change_state', {'id': demandeRH.id, 'status': constant('AppBundle\\Constants\\GestionCongeConstant::CONGE_STATUS_VALIDATED')}) }}">
+                        <span class="btn">
+                            <button type="button" name="btn-validate-demande-rh" class="btn btn-success" id="btn-vaidate-demande-rh"><i class="fa fa-check"></i>&nbsp;&nbsp;Valider</button>
+                        </span>
+                    </a>
+                    <a href="{{ path('demanderh_change_state', {'id': demandeRH.id, 'status': constant('AppBundle\\Constants\\GestionCongeConstant::CONGE_STATUS_REFUSED')})  }}">
+                        <span class="btn">
+                            <button type="button" name="btn-validate-demande-rh" class="btn btn-danger" id="btn-refuse-demande-rh"><i class="fa fa-remove"></i>&nbsp;&nbsp;Réfuser</button>
+                        </span>
+                    </a>
+					{% endif %}
+                </span>
+            </div>
+            <div class="box-footer">
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,62 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Traits;
+
+/**
+ * Direction
+ *
+ * @ORM\Table(name="direction")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\DirectionRepository")
+ * @ORM\HasLifecycleCallbacks()
+ */
+class Direction
+{
+    use Traits\id;
+    use Traits\createdAt;
+    use Traits\updatedAt;
+    use Traits\enabled;
+    use Traits\libelle;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="direction_sigle", type="string", length=255, unique=true)
+     */
+    private $sigle;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Modeleworkflow", mappedBy="direction")
+     *
+     */
+    private $modeleWorkflow;
+
+    /**
+     * Set sigle
+     *
+     * @param string $sigle
+     *
+     * @return Direction
+     */
+    public function setSigle($sigle)
+    {
+        $this->sigle = $sigle;
+
+        return $this;
+    }
+
+    /**
+     * Get sigle
+     *
+     * @return string
+     */
+    public function getSigle()
+    {
+        return $this->sigle;
+    }
+}
+

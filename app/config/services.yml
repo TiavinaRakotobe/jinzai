@@ -1,0 +1,41 @@
+services:
+    app.form.registration:
+        class: Admin\UserBundle\Form\Type\RegistrationFormType
+        tags:
+            - { name: form.type, alias: app_user_registration }
+
+    app.my_canonicalizer:
+        class: Admin\UserBundle\Util\CustomCanonicalizer
+        public: false
+
+    common.service:
+        class: AppBundle\Services\CommonService
+        arguments: [@service_container]
+
+    demande_conge.listener:
+        class: AppBundle\Listener\DemandeCongeListener
+        tags:
+            - {name: doctrine.event_listener, event: prePersist}
+            - {name: doctrine.event_listener, event: preUpdate}
+        calls:
+            - [setContainer , ["@service_container"]]
+
+    jours_feries.listener:
+        class: AppBundle\Listener\JoursFeriesListener
+        tags:
+            - {name: doctrine.event_listener, event: prePersist}
+            - {name: doctrine.event_listener, event: preUpdate}
+        calls:
+            - [setContainer , ["@service_container"]]
+
+    demande_conge.twig_extension:
+        class: AppBundle\Twig\Extension\CommonTwigExtension
+        tags:
+            -  { name: twig.extension }
+        arguments: [@service_container]
+
+    jours_feries.twig_extension:
+        class: AppBundle\Twig\Extension\CommonTwigExtension
+        tags:
+            -  { name: twig.extension }
+        arguments: [@service_container]

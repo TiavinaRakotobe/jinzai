@@ -1,0 +1,41 @@
+{% extends 'AppBundle::layout.html.twig' %}
+{% block content_body %}
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Workflow</h3>
+                {% block box_tool %}
+                {% endblock %}
+            </div>
+            <a href="{{ path('modeleworkflow_edit', {'id': null }) }}">
+                <span class="btn">
+                    <button type="button" name="new" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;&nbsp;Ajouter nouveau</button></span>
+            </a>
+            <div class="box-body">
+                <table id="liste-wokflow" class="table table-bordered table-condensed table-responsive table-striped blue-header">
+                    <thead>
+                        <tr>
+                            <th>Libelle</th>
+                            <th>Description</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for modeleWorkflow in modeleWorkflows %}
+                            <tr>
+                                <td><a href="{{ path('modeleworkflow_show', { 'id': modeleWorkflow.id }) }}">{{ modeleWorkflow.libelle }}</a></td>
+                                <td>{{ modeleWorkflow.description }}</td>
+                                <td align="center">{% if modeleWorkflow.enabled %}<i class="fa fa-check-circle blue"></i>{% else %}<i class="fa fa-times-circle red"></i>{% endif %}</td>
+                                <td>
+                                    <a href="{{ path('modeleworkflow_show', { 'id': modeleWorkflow.id }) }}">show</a>
+                                    <a href="{{ path('modeleworkflow_edit', { 'id': modeleWorkflow.id }) }}">edit</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+{% endblock %}

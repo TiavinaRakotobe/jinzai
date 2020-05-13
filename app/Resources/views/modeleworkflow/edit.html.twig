@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>ModeleWorkflow edit</h1>
+
+    {{ form_start(edit_form) }}
+    {{ form_widget(edit_form) }}
+    <input type="submit" value="Edit" />
+    {{ form_end(edit_form) }}
+
+    <ul>
+        <li>
+            <a href="{{ path('modeleworkflow_index') }}">Back to the list</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+            <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+    <table border="0">
+        <caption>Liste des étapes</caption>
+        <thead>
+            <tr>
+                <th>Libelle</th>
+                <th>Ordre</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if wfSteps is defined and wfSteps|length > 0 %}
+                {% for step in wfSteps %}
+                    <tr>
+                        <td>{{ step.libelle }}</td>
+                        <td>{{ step.step }}</td>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="3">Aucun résultat trouvé</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+{% endblock %}

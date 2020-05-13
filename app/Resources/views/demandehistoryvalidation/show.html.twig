@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>DemandeHistoryValidation</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Commentaire</th>
+                <td>{{ demandeHistoryValidation.commentaire }}</td>
+            </tr>
+            <tr>
+                <th>Validationstatus</th>
+                <td>{{ demandeHistoryValidation.validationStatus }}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ demandeHistoryValidation.id }}</td>
+            </tr>
+            <tr>
+                <th>Createdat</th>
+                <td>{% if demandeHistoryValidation.createdAt %}{{ demandeHistoryValidation.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Updatedat</th>
+                <td>{% if demandeHistoryValidation.updatedAt %}{{ demandeHistoryValidation.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('demandehistoryvalidation_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('demandehistoryvalidation_edit', { 'id': demandeHistoryValidation.id }) }}">Edit</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'AppBundle::layout.html.twig' %}
+{% block content_body %}
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Détail direction</h3>
+            {% block box_tool %}{% endblock %}
+        </div>
+        <div class="box-body">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>Sigle</th>
+                                <td> : {{ direction.sigle }}</td>
+                            </tr>
+                            <tr>
+                                <th>Libelle</th>
+                                <td> : {{ direction.libelle }}</td>
+                            </tr>
+                            <tr>
+                                <th>Crée le</th>
+                                <td> : {% if direction.createdAt %}{{ direction.createdAt|date('d/m/Y H:i:s') }}{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <th>Modifié le</th>
+                                <td> : {% if direction.updatedAt %}{{ direction.updatedAt|date('d/m/Y H:i:s') }}{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <th>Enabled</th>
+                                <td> : {% if direction.enabled %}<i class="fa fa-check-circle blue"></i>{% else %}<i class="fa fa-times-circle red"></i>{% endif %}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="btn-group">
+                    <a href="{{ path('direction_index') }}">
+                        <span class="btn">
+                            <button type="button" name="retour" class="btn btn-default"><i class="fa fa-backward"></i>&nbsp;&nbsp;Retour</button>
+                        </span>
+                    </a>
+                    <a href="{{ path('direction_edit', { 'id': direction.id }) }}">
+                        <span class="btn">
+                            <button type="button" name="editer" class="btn btn-primary"><i class="fa fa-edit"></i>&nbsp;&nbsp;Modifier</button>
+                        </span>
+                    </a>
+                    <span class="btn">
+                        {{ form_start(delete_form) }}
+                        <button type="submit" name="delete" class="btn btn-danger"><i class="fa fa-remove"></i>&nbsp;&nbsp;Supprimer</button>
+                        {{ form_end(delete_form) }}
+                    </span>
+                </div>
+                <div class="box-footer">
+                </div>
+            </div>
+        </div>
+</section>
+{% endblock %}

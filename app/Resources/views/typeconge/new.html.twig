@@ -1,0 +1,26 @@
+{% extends 'AppBundle::layout.html.twig' %}
+{% block content_body %}
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Type demande (congé ou RH)</h3>
+                {% block box_tool %}{{ parent() }}{% endblock %}
+            </div>
+            {{ form_start(form) }}
+            <div class="box-body">
+                {{ form_widget(form) }}
+            </div>
+            <div class="btn-group">
+                <span class="btn">
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>&nbsp;&nbsp;Enregistrer</button>
+                </span>
+                <a href="{{ path('typeconge_index') }}">
+                    <span class="btn">
+                        <button type="button" name="retour" class="btn btn-default"><i class="fa fa-backward"></i>&nbsp;&nbsp;Retour à la liste</button>
+                    </span>
+                </a>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </section>
+{% endblock %}

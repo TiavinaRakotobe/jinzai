@@ -1,0 +1,175 @@
+<!-- Left side column. contains the logo and sidebar -->
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        <!-- Sidebar user panel -->
+        <div class="user-panel">
+            <div class="pull-left image">
+                <img src="{{ asset('bundles/app/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
+            </div>
+            <div class="pull-left info">
+                <p>{{ app.user ? app_name : '' }}</p>
+                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+            </div>
+        </div>
+        <!-- search form -->
+        <form action="{{ path('search_user_detail') }}" method="post" class="sidebar-form">
+            <div class="input-group">
+                <input type="text" name="matricule" class="form-control" placeholder="Search by matricule..." value="{{ app.request.get('matricule') is defined ? app.request.query.get('matricule'):'' }}">
+                <span class="input-group-btn">
+                    <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                    </button>
+                </span>
+            </div>
+        </form>
+        <!-- /.search form -->
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="header">MAIN NAVIGATION</li>
+            <!-- li class="treeview">
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="../../index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
+                    <li><a href="../../index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
+                </ul>
+            </li-->
+            <li class="treeview ">
+                <a href="#">
+                    <i class="fa fa-edit"></i> <span>Demande de congé</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="{{ (app.request.get('_route') == 'demandeconge_new') ? 'active':'' }}"><a href="{{ path('demandeconge_new',{'menuId': 1,'userId' : 0}) }}"><i class="fa fa-circle-o"></i> Création demande</a></li>
+                        {% else %}
+                        <li class="{{ (app.request.get('_route') == 'demandeconge_new') ? 'active':'' }}"><a href="{{ path('demandeconge_new',{'menuId': 1,'userId' : app.user.id }) }}"><i class="fa fa-circle-o"></i> Création demande</a></li>
+                        {% endif %}
+                    <li class="{{ (app.request.get('_route') in ['demandeconge_index', 'demandeconge_show']) ? 'active':'' }}"><a href="{{ path('demandeconge_index') }}"><i class="fa fa-circle-o"></i> Liste des demandes</a></li>
+                    <li class="{{ (app.request.get('_route') in ['demandeconge_calandar_mode']) ? 'active':'' }}"><a href="{{ path('demandeconge_calandar_mode', {'userId' : 0 }) }}"><i class="fa fa-calendar"></i>Planning congé</a></li>
+                </ul>
+            </li>
+            <li class="treeview ">
+                <a href="#">
+                    <i class="fa fa-edit"></i> <span>Permission Exceptionnelle</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="{{ (app.request.get('_route') == 'demandeconge_new') ? 'active':'' }}"><a href="{{ path('demandeconge_new',{'menuId': 2,'userId' : 0}) }}"><i class="fa fa-circle-o"></i> Création demande</a></li>
+                        {% else %}
+                        <li class="{{ (app.request.get('_route') == 'demandeconge_new') ? 'active':'' }}"><a href="{{ path('demandeconge_new',{'menuId': 2,'userId' : app.user.id}) }}"><i class="fa fa-circle-o"></i> Création demande</a></li>
+                        {% endif %}
+                    <li class="{{ (app.request.get('_route') in ['demandeconge_index', 'demandeconge_show']) ? 'active':'' }}"><a href="{{ path('demandeconge_index') }}"><i class="fa fa-circle-o"></i> Liste des demandes</a></li>
+                    <li class="{{ (app.request.get('_route') in ['demandeconge_calandar_mode']) ? 'active':'' }}"><a href="{{ path('demandeconge_calandar_mode', {'userId' : 0 }) }}"><i class="fa fa-calendar"></i>Planning congé</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-edit"></i> <span>Permission Maladie</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="{{ (app.request.get('_route') == 'demandeconge_new') ? 'active':'' }}"><a href="{{ path('demandeconge_new',{'menuId': 3,'userId' : 0 }) }}"><i class="fa fa-circle-o"></i> Création demande</a></li>
+                        {% else %}
+                        <li class="{{ (app.request.get('_route') == 'demandeconge_new') ? 'active':'' }}"><a href="{{ path('demandeconge_new',{'menuId': 3,'userId' : app.user.id}) }}"><i class="fa fa-circle-o"></i> Création demande</a></li>
+                        {% endif %}
+                    <li class="{{ (app.request.get('_route') in ['demandeconge_index', 'demandeconge_show']) ? 'active':'' }}"><a href="{{ path('demandeconge_index') }}"><i class="fa fa-circle-o"></i> Liste des demandes</a></li>
+                    <li class="{{ (app.request.get('_route') in ['demandeconge_calandar_mode']) ? 'active':'' }}"><a href="{{ path('demandeconge_calandar_mode', {'userId' : 0 }) }}"><i class="fa fa-calendar"></i>Planning congé</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-edit"></i> <span>Absence Non Justifié</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="{{ (app.request.get('_route') == 'demandeconge_new') ? 'active':'' }}"><a href="{{ path('demandeconge_new',{'menuId': 4,'userId' : 0 }) }}"><i class="fa fa-circle-o"></i> Création demande</a></li>
+                        {% else %}
+                        <li class="{{ (app.request.get('_route') == 'demandeconge_new') ? 'active':'' }}"><a href="{{ path('demandeconge_new',{'menuId': 4,'userId' : app.user.id }) }}"><i class="fa fa-circle-o"></i> Création demande</a></li>
+                        {% endif %}
+                    <li class="{{ (app.request.get('_route') in ['demandeconge_index', 'demandeconge_show']) ? 'active':'' }}"><a href="{{ path('demandeconge_index') }}"><i class="fa fa-circle-o"></i> Liste des absences</a></li>
+                    <li class="{{ (app.request.get('_route') in ['demandeconge_calandar_mode']) ? 'active':'' }}"><a href="{{ path('demandeconge_calandar_mode', {'userId' : 0 }) }}"><i class="fa fa-calendar"></i>Planning congé</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-edit"></i> <span>Demande RH</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ (app.request.get('_route') == 'demanderh_new') ? 'active':'' }}"><a href="{{ path('demanderh_new') }}"><i class="fa fa-circle-o"></i> Création demande</a></li>
+                    <li class="{{ (app.request.get('_route') in ['demanderh_index', 'demanderh_show']) ? 'active':'' }}"><a href="{{ path('demanderh_index') }}"><i class="fa fa-circle-o"></i> Liste des demandes</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-table"></i> <span>Validation demandes</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ (app.request.get('_route') in ['demandehistoryvalidation_index', 'demandehistoryvalidation_edit']) ? 'active':'' }}">
+                        <a href="{{ path('demandehistoryvalidation_index') }}">
+                            <i class="fa fa-circle-o"></i>Liste des demandes de congé
+                        </a>
+                    </li>
+                    <!-- Accessible for admin -->
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="{{ (app.request.get('_route') in ['bulk_validation_demande']) ? 'active':'' }}">
+                            <a href="{{ path('bulk_validation_demande') }}">
+                                <i class="fa fa-circle-o"></i>Validation en masse
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+            <!-- Menu for admin -->
+            {% if is_granted('ROLE_ADMIN') %}
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-gears"></i> <span>Paramètres</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <!--utilisateurs-->
+                        <li class="{{ (app.request.get('_route') in ['user_liste', 'fos_user_registration_register']) ? 'active' : ''}}"><a href="{{ path('user_liste') }}"><i class="fa fa-user-circle"></i>Gestion utilisateurs</a>
+                        </li>
+                        <!--jours feries-->
+                        <li class="{{ (app.request.get('_route') in ['joursferies_index', 'joursferies_edit', 'joursferies_show']) ? 'active' : ''}}"><a href="{{ path('joursferies_index') }}"><i class="fa fa-circle-o"></i>Jours ferié</a>
+                        </li>
+                        <!--direction-->
+                        <li class="{{ (app.request.get('_route') in ['direction_index', 'direction_edit', 'direction_show']) ? 'active' : ''}}"><a href="{{ path('direction_index') }}"><i class="fa fa-circle-o"></i>Directions</a>
+                        </li>
+                        <!--modele workflow-->
+                        <li class="{{ (app.request.get('_route') in ['modeleworkflow_index', 'modeleworkflow_edit', 'modeleworkflow_show']) ? 'active' : ''}}"><a href="{{ path('modeleworkflow_index') }}"><i class="fa fa-circle-o"></i>Workflows</a>
+                        </li>
+                        <!--type congé-->
+                        <li class="{{ (app.request.get('_route') in ['typeconge_index', 'typeconge_edit', 'typeconge_show']) ? 'active' : ''}}"><a href="{{ path('typeconge_index') }}"><i class="fa fa-circle-o"></i>Type demande (congé/RH)</a>
+                        </li>
+                    </ul>
+                </li>
+            {% endif %}
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>

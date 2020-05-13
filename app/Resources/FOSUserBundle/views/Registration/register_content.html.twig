@@ -1,0 +1,86 @@
+<form action="{{ action is defined ? action: path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register" novalidate="novalidate">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name) }}
+                {{ form_errors(form.name) }}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                {{ form_label(form.matricule) }}
+                {{ form_widget(form.matricule) }}
+                {{ form_errors(form.matricule) }}
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                {{ form_label(form.email) }}
+                {{ form_widget(form.email) }}
+                {{ form_errors(form.email) }}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                {{ form_label(form.username) }}
+                {{ form_widget(form.username) }}
+                {{ form_errors(form.username) }}
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                {{ form_label(form.manager) }}
+                {{ form_widget(form.manager) }}
+                {{ form_errors(form.manager) }}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                {{ form_label(form.direction) }}
+                {{ form_widget(form.direction) }}
+                {{ form_errors(form.direction) }}
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                {{ form_label(form.plainPassword.first) }}
+                {{ form_widget(form.plainPassword.first) }}
+                {{ form_errors(form.plainPassword.first) }}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                {{ form_label(form.plainPassword.second) }}
+                {{ form_widget(form.plainPassword.second) }}
+                {{ form_errors(form.plainPassword.second) }}
+            </div>
+        </div>
+        {#<div class="col-md-6">
+            <div class="form-group">
+                {{ form_label(form.photo) }}
+                {{ form_widget(form.photo) }}
+                {{ form_errors(form.photo) }}
+            </div>
+        </div>#}
+        <div class="col-md-6">
+            <div class="form-group">
+                {{ form_label(form.expat) }}
+                {{ form_widget(form.expat) }}
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                {{ form_label(form.roles) }}
+                {{ form_widget(form.roles) }}
+            </div>
+        </div>
+    </div>
+    <div>
+        <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i>&nbsp;&nbsp;Enregistrer</button>
+    </div>
+    {{ form_end(form) }}
+</form>

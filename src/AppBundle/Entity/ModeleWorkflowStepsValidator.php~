@@ -1,0 +1,42 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Traits;
+
+/**
+ * ModeleWorkflowStepsValidator
+ *
+ * @ORM\Table(name="modele_workflow_steps_validator")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ModeleWorkflowStepsValidatorRepository")
+ * @ORM\HasLifecycleCallbacks()
+ */
+class ModeleWorkflowStepsValidator
+{
+
+    use Traits\id;
+    use Traits\createdAt;
+    use Traits\updatedAt;
+    use Traits\enabled;
+    /**
+     * @var \ModeleWorkflowSteps
+     *
+     * @ORM\ManyToOne(targetEntity="ModeleWorkflowSteps", fetch="EXTRA_LAZY")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="modele_workflow_steps_id", referencedColumnName="id")
+     * })
+     */
+    private $modeleWorkflowStepsId;
+
+    /**
+     * @var Utlisateut
+     *
+     * @ORM\ManyToOne(targetEntity="Admin\UserBundle\Entity\Utlisateut")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="validator_id", referencedColumnName="id")
+     * })
+     */
+    private $validatorId;
+
+}

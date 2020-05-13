@@ -1,0 +1,179 @@
+<html>
+<body>
+    {% if demandeconge is defined and demandeconge != null%}
+        <table width='500px' border=0 align="center" style="font-size: 13px;font-family: 'Calibri (Body)', Times, serif;">
+            <tr>
+                <td valign='center' align='left'>
+                    <b>
+                        {% if type is defined and type == 1 %}
+                            Demande de conge suivante a été bien enregistrée:
+                        {% elseif type is defined and type == 2 %}
+                            Relance de la demande de conge suivante :
+                        {% elseif type is defined and type == 3 %}
+                            Nouvelle demande de conge en attente de validation :
+                        {% elseif type is defined and type == 4 %}
+                            Annulation de demande de conge :
+                        {% endif %}
+                    </b>
+                </td>
+            </tr><br /><br />
+            <!--tr><td valign='top' align='left'><img src="{{  app.request.scheme ~  '://' ~  app.request.host ~ asset('bundles/telmacommun/design_bo/images/interface/logo_telma_pm.jpg') }}" width="140" height="100" border='0'><br><font size='2'>DIRECTION GENERALE</font></td></tr-->
+            <tr><td valign='center' align='center'><b>DEMANDE DE CONGE</b></td></tr>
+            <tr>
+                <td valign='top' align='right'>
+                    <table bgcolor='black' width='40%'>
+                        <tr>
+                            <td valign='center' align='center' bgcolor='white'>
+                                {% if demandeconge.id > 0 %}
+                                    N&ordm; {{ demandeconge.numero }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr><td valign='top' align='left'><b>Type de conge :</b> {{ demandeconge.typeConge.libelle }}</td></tr>
+            <tr><td valign='top' align='left'><b>
+                Date Début: </b>{{ demandeconge.dateStart|date("d/m/Y") }}
+                {% if demandeconge.dateStartMorning == 1 %}
+                    &nbsp;Matin
+                {% endif %}
+                {% if demandeconge.dateStartAfternoon == 1 %}
+                    &nbsp;Après Midi
+                {% endif %}
+            &nbsp; - &nbsp;<b>Date Fin: </b>{{ demandeconge.dateEnd|date("d/m/Y") }}
+            {% if demandeconge.dateEndMorning == 1 %}
+                    &nbsp;Matin
+                {% endif %}
+                {% if demandeconge.dateEndAfternoon == 1 %}
+                    &nbsp;Après Midi
+                {% endif %}
+            </td></tr>
+            <tr><td valign='top' align='left'><b>Nombre de jour : </b>{{ demandeconge.totalDays }}</td></tr>
+            <tr><td valign='top' align='left'><b>Solde réel : </b>{{ soldeReel }}</td></tr>
+            <tr><td valign='top' align='left'><b>Solde prévisionnel : </b>{{ soldePrevisionnel }}</td></tr>
+            <tr><td valign='top' align='left'>&nbsp;</td></tr>
+            <tr>
+                <td valign='top' align='left'>
+                    <b><br />Initiateur :</b>
+                    {% if demandeconge.initiator != null %}
+                        {{ demandeconge.initiator.name }}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td valign='top' align='left'>
+                    <b>
+                        Demandeur :
+                    </b>
+                        {% if demandeconge.demandor != null %}
+                            {{ demandeconge.demandor.name }}
+                        {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td valign='top' align='left'>
+                    <b>
+                        Matricule :
+                    </b>
+                        {% if demandeconge.demandor != null %}
+                            {{ demandeconge.demandor.matricule }}
+                        {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td valign='top' align='left'>
+                    <b>
+                        Statut final :
+                    </b>
+                        {% if demandeconge.demandeStatus == 1 %}
+                            Validée
+                        {% elseif demandeconge.demandeStatus == 2%}
+                            Refusée
+                        {% else %}
+                            En attente
+                        {% endif %}
+                </td>
+            </tr>
+            <br />
+
+            <tr><td valign='top' align='right'>
+                <table bgcolor='black' width='40%'>
+                    <tr>
+                        <td valign='center' align='center' bgcolor='white'>
+                                {% if demandeconge.demandor.direction != null %}
+                                    {{ demandeconge.demandor.direction.libelle }}
+                                {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </td></tr>
+
+
+            {% if demandeconge.observations is defined and demandeconge.observations is not null and  demandeconge.observations != ''%}
+                <tr><td valign='top' align='left'><u>Observations</u> :</td></tr>
+                <tr><td valign='top' align='justify'>{{ demandeconge.observations|nl2br }}</td></tr><br />
+            {% endif %}
+
+            {% if (demandeconge.demandeHistoryValidation is defined) and (demandeconge.demandeHistoryValidation|length > 0) %}
+                <tr><td valign='center' align='left'><b><u>VALIDATION</u></b></td></tr>
+                <tr>
+                    <td valign='top' align='left'>
+                        <table border='0' bgcolor='black' width='100%'>
+                            <tr>
+                                <td valign='center' align='center' bgcolor='white' width="40%"><b>Validateur</b></td>
+                                <!--td valign='center' align='center' bgcolor='white' width="40%"><b>Délégation</b></td-->
+                                <td valign='center' align='center' bgcolor='white' width="20%"><b>Date</b></td>
+                                <td valign='center' align='center' bgcolor='white' width="20%"><b>Etat</b></td>
+                                <td valign='center' align='center' bgcolor='white' width="20%"><b>Commentaire</b></td>
+                            </tr>
+                            {% for daHistory in demandeconge.demandeHistoryValidation %}
+                                <tr>
+                                    <td valign='center' align='center' bgcolor='white'>{{ daHistory.validator.name }}</td>
+                                    <!--td valign='center' align='center' bgcolor='white'>{% if daHistory.wfDahistoryDelegationid != null %}{{ daHistory.wfDahistoryDelegationid.name }}{% endif %}</td-->
+                                    <td valign='center' align='center' bgcolor='white'>{{ daHistory.updatedAt|date("d/m/Y H:i:s") }}</td>
+                                    <td valign='center' align='center' bgcolor='white'>
+                                        {% if daHistory.validationStatus == 1 %}
+                                            Validée
+                                        {% elseif daHistory.validationStatus == 2 %}
+                                            Refusée
+                                        {% else %}
+                                            En attente
+                                        {% endif %}
+                                    </td>
+                                    <td valign='center' align='left' bgcolor='white'>{{ daHistory.commentaire|nl2br }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </td>
+                </tr>
+            {% endif %}
+            <tr><td valign='top' align='left'>&nbsp;</td></tr><br/>
+            <!--tr>
+                <td valign='center' align='left'>
+                        {% if nextWfDahistoryId is defined and nextWfDahistoryId > 0 %}
+                            Validation de la demande :
+                            <a  style="text-decoration: none;" href="{{ url('telma_validation_demande_conge', { 'congeId' : demandeconge.demandecongeId, 'wfDahistoryId' : nextWfDahistoryId }) }}" title="Accepter" target="_blank">
+                                <button class="confirm_validation dark green no_margin_bottom close_dialog" style="background-color: #00703c; border: 1px solid #277423;">
+                                    {#<img src="{{ app.request.scheme ~  '://' ~  app.request.host ~ asset('bundles/telmacommun/design_bo/images/icons/small/white/')~imageCancel }}">#}
+                                    <span>ACCEPTER</span>
+                                </button>
+                            </a>
+                            &nbsp;
+                            <a  style="text-decoration: none;" href="{{ url('telma_espace_perso_da_edit', { '_wfDahistoryId' : nextWfDahistoryId}) }}" title="Refuser" target="_blank">
+                                <button class="red send_right" style="background-color: rgb(124,31,48); border: 1px solid #277423;">
+                                    {#<img src="{{ app.request.scheme ~  '://' ~  app.request.host ~ asset('bundles/telmacommun/design_bo/images/icons/small/white/')~imageCancel }}">#}
+                                    <span>REFUSER</span>
+                                </button>
+                            </a>*
+                            <br />
+                            <br />
+                            *Un commentaire obligatoire est à renseigner lors du refus d'une demande
+                        {% endif %}
+                </td>
+            </tr-->
+        </table><br />
+    {% endif %}
+    </body>
+</html>

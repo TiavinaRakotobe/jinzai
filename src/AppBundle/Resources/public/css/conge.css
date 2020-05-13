@@ -1,0 +1,62 @@
+table.blue-header thead tr {background-color: #3c8dbc;color: #fff}
+table.blue-header thead th a {color: #fff}
+#loading {
+    z-index: 1100;
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+}
+/* line 1874, ../sass/styles.scss */
+#loading img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -240px 0 0 -214px;
+}
+td i.blue {color: #3c8dbc;}
+td i.red {color: #C9302C;}
+label.required:after {
+    content: " *";
+    color: red;
+}
+.btn-chekbox label:focus, .btn-chekbox label.active, btn-default.active, btn-default:focus, .btn-default:active {
+    background: #367fa9!important;
+    color: #fff!important;
+}
+.checkbox-half-day {margin-top: 25px;}
+div.navigation {text-align: right;}
+.pagination>span {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #337ab7;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+/*.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover*/
+.pagination>.current, .pagination>a:hover {
+    z-index: 3;
+    color: #fff;
+    cursor: default;
+    background-color: #337ab7;
+    border-color: #337ab7;
+}
+.datepicker table tr td.today {
+    color: #fff;
+    background-color: #3c8dbc;
+    border-color: #3c8dbc;
+}
+.datepicker table tr td.active {
+    color: #fff;
+    background-color: #00a65a!important;
+    border-color: #00a65a!important;
+}
+.form-group ul>li {list-style-type: none;color:red;}
+body.login-page {background: url('../img/log.jpg');}

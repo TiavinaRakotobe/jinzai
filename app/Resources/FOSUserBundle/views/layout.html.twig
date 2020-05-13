@@ -1,0 +1,31 @@
+{% extends 'AppBundle::layout.html.twig' %}
+{% block content_body %}
+
+    <section class="content">
+        <!--div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Gestion des utilisateurs</h3>
+            </div>
+            <div class="box-footer">
+            </div>
+        </div-->
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Gestion utilisateur</h3>
+            </div>
+            <div class="box-footer">
+            </div>
+            <div class="box-body">
+                {% for type, messages in app.session.flashBag.all %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ type }}">
+                            {{ message|trans({}, 'FOSUserBundle') }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {% block fos_user_content %}
+                {% endblock %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

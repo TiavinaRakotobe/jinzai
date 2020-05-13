@@ -1,0 +1,102 @@
+{% extends 'AppBundle::layout.html.twig' %}
+{% block content_body %}
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Demande RH : recherche avancée</h3>
+                {% block box_tool %}
+                {% endblock %}
+            </div>
+            <div class="box-body">
+                <form action="{{ path('demanderh_index') }}" method="get">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Démandeur</label>
+                                {{ form_widget(form.demandor) }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date début/fin</label>
+                                <div class="input-group">
+                                    {{ form_widget(form.fromDate) }}
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    {{ form_widget(form.toDate) }}
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Type demande</label>
+                                {{ form_widget(form.typeDemande) }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Statut</label>
+                                {{ form_widget(form.demandeStatus) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <span class="btn">
+                            <button type="submit" name="submit" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp;&nbsp;Rechercher</button>
+                        </span>
+                        <span class="btn">
+                            <button type="button" name="reset" class="btn btn-default btn-reset"><i class="fa fa-repeat"></i>&nbsp;&nbsp;Réinitialiser</button>
+                        </span>
+                    </div>
+                    {{ form_end(form) }}
+                </form>
+            </div>
+            <div class="box-footer">
+            </div>
+        </div>
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">Résultats : {{ pagination.getTotalItemCount }} résultat(s) trouvé(s)</h3>
+                <a href="{{ path('demanderh_new') }}">
+                    <span class="btn pull-right">
+                        <button type="button" name="new" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;&nbsp;Créer une nouvelle demande</button></span>
+                </a>
+            </div>
+            <div class="box-body">
+                <table id="liste-demande-rh" class="table table-bordered table-condensed table-responsive table-striped blue-header table-hover dataTable">
+                    <thead>
+                        <tr>
+                            <th>Demandeur</th>
+                            <th>Type demande</th>
+                            <th>Commentaire</th>
+                            <th>Date création</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for demandeRH in pagination %}
+                            <tr>
+                                <td>{{ demandeRH.demandor.name }}</td>
+                                <td>{{ demandeRH.typeDemande.libelle }}</td>
+                                <td>{{ demandeRH.commentaire|raw }}</td>
+                                <td>{% if demandeRH.createdAt %}{{ demandeRH.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                <td>{{ demandeRH.demandeRhStatus|label_status_dc }}</td>
+                                <td>
+                                    <a href="{{ path('demanderh_show', { 'id': demandeRH.id }) }}">show</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="navigation">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

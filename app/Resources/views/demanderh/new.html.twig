@@ -1,0 +1,74 @@
+{% extends 'AppBundle::layout.html.twig' %}
+{% block content_body %}
+    <section class="content">
+        <form id="form-rh-create" method="post" novalidate="novalidate">
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Création demande RH</h3>
+                    {% block box_tool %}{{ parent() }}{% endblock %}
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                {{ form_label(form.typeDemande) }}
+                                {{ form_widget(form.typeDemande) }}
+                                {{ form_errors(form.typeDemande) }}
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                {{ form_label(form.commentaire) }}
+                                {{ form_widget(form.commentaire) }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form_label(form.demandor) }}
+                                {{ form_widget(form.demandor) }}
+                                {{ form_errors(form.demandor) }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date de livraison souhaité</label>
+                                <div class="input-group">
+                                    {{ form_widget(form.fromDate) }}
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    
+									{#{{ form_widget(form.toDate) }}#}
+                                    <!--div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div-->
+                                </div>
+                            </div>
+                        </div>
+						<div class="col-md-3">
+                            <div class="form-group">
+                                {{ form_label(form.nombreDemande) }}
+                                {{ form_widget(form.nombreDemande) }}
+								{{ form_errors(form.nombreDemande) }}
+                            </div>
+                        </div>
+                    </div>
+                    {{ form_end(form) }}
+                    <div class="btn-group">
+                        <span class="btn">
+                            <button type="submit" name="btn-create-demande-rh" class="btn btn-primary" id="btn-save-demande-rh"><i class="fa fa-save"></i>&nbsp;&nbsp;Enregistrer</button>
+                        </span>
+                        <a href="{{ path('demanderh_index') }}">
+                            <span class="btn">
+                                <button type="button" name="retour" class="btn btn-default"><i class="fa fa-backward"></i>&nbsp;&nbsp;Retour à la liste</button></span>
+                        </a>
+                    </div>
+                </div>
+                <div class="box-footer">
+                </div>
+            </div>
+        </form>
+        <!-- /.box -->
+    </section>
+{% endblock %}

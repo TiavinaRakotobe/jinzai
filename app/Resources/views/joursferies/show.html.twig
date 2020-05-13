@@ -1,0 +1,46 @@
+{% extends 'AppBundle::layout.html.twig' %}
+{% block content_body %}
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Détail jours ferié</h3>
+            {% block box_tool %}{% endblock %}
+        </div>
+        <div class="box-body">
+            <table>
+                <tbody>
+                    <tr>
+                        <th>Date</th>
+                        <td>{% if joursFeries.joursFeriesDate %}{{ joursFeries.joursFeriesDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th>Activé</th>
+                        <td>{% if joursFeries.enabled %}<i class="fa fa-check-circle blue"></i>{% else %}<i class="fa fa-times-circle red"></i>{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td>{{ joursFeries.description|raw }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="btn-group">
+                <a href="{{ path('joursferies_edit', { 'id': joursFeries.id }) }}">
+                    <span class="btn">
+                        <button type="button" name="retour" class="btn btn-primary"><i class="fa fa-edit"></i>&nbsp;&nbsp;Modifier</button>
+                    </span>
+                </a>
+                <a href="{{ path('joursferies_index') }}">
+                    <span class="btn">
+                        <button type="button" name="retour" class="btn btn-default"><i class="fa fa-backward"></i>&nbsp;&nbsp;Retour à la liste</button>
+                    </span>
+                </a>
+                <span class="btn">
+                    {{ form_start(delete_form) }}
+                    <button type="submit" class="btn btn-danger"><i class="fa fa-remove"></i>&nbsp&nbsp;Supprimer</button>
+                    {{ form_end(delete_form) }}
+                </span>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

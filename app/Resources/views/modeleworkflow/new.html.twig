@@ -1,0 +1,87 @@
+{% extends 'AppBundle::layout.html.twig' %}
+{% block content_body %}
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Workflow</h3>
+                {% block box_tool %}{{ parent() }}{% endblock %}
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                {{ form_start(form, {'no-validate':'no-validate'}) }}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            {{ form_label(form.libelle) }}
+                            {{ form_widget(form.libelle) }}
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            {{ form_label(form.direction) }}
+                            {{ form_widget(form.direction) }}
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            {{ form_label(form.description) }}
+                            {{ form_widget(form.description) }}
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            {{ form_label(form.enabled) }}
+                            {{ form_widget(form.enabled) }}
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <a href="#" id="ajout_etape"><i class="fa fa-plus"></i>&nbsp;&nbsp;Ajouter étape</button></span></a>
+                        </div>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="modeleWorkflowSteps" id="modeleWorkflowSteps" data-prototype="<tr>
+                             <td>{{ form_widget(form.modeleWorkflowSteps.vars.prototype.libelle)|e('html_attr') }}</td>
+                             <td>{{ form_widget(form.modeleWorkflowSteps.vars.prototype.stepOrder)|e('html_attr') }}</td>
+                             <td>{{ form_widget(form.modeleWorkflowSteps.vars.prototype.validationType)|e('html_attr') }}</td>
+                             </tr>">
+                            <table class="table table-bordered blue-header table-step">
+                                <thead>
+                                    <tr>
+                                        <th>Libellé</th>
+                                        <th>Ordre</th>
+                                        <th>Validation type</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for step in form.modeleWorkflowSteps %}
+                                        <tr>
+                                            <td>{{ form_widget(step.libelle) }}</td>
+                                            <td>{{ form_widget(step.stepOrder) }}</td>
+                                            <td>{{ form_widget(step.validationType) }}</td>
+                                            <td><!--a href="#"><span class="btn"><button type="button" name="remove" class="btn btn-danger"><i class="fa fa-remove"></i>&nbsp;&nbsp;Supprimer</button></span></a--></td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        {% include ':modeleworkflow:steps.html.twig' with { 'steps':modeleWorkflowSteps } %}
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <span class="btn">
+                        <button type="submit" name="submit" class="btn btn-primary"><i class="fa fa-save"></i>&nbsp;&nbsp;Enregistrer</button>
+                    </span>
+                    <a href="{{ path('modeleworkflow_index') }}">
+                        <span class="btn">
+                            <button type="button" name="retour" class="btn btn-default"><i class="fa fa-backward"></i>&nbsp;&nbsp;Retour à la liste</button></span>
+                    </a>
+                </div>
+                {{ form_end(form, {'render_rest' : false}) }}
+            </div>
+        </div>
+    </section>
+{% endblock %}

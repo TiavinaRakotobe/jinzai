@@ -1,0 +1,239 @@
+{% extends 'AppBundle::layout.html.twig' %}
+{% block content_body %}
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Détail demande de congé</h3>
+            {% block box_tool %}{% endblock %}
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Numéro demande :</label>
+                            <p class="col-md-4 control-group">{{ demandeConge.numero }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Date création :</label>
+                            <p class="col-md-4 control-group">{{ demandeConge.createdAt|date('Y-m-d H:i:s') }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Crée par :</label>
+                            <p class="col-md-4 control-group">{{ demandeConge.initiator.name }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Démandeur :</label>
+                            <p class="col-md-4 control-group">{{ demandeConge.demandor.name }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Matricule :</label>
+                            <p class="col-md-4 control-group">{{ demandeConge.demandor.matricule }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Type de congé :</label>
+                            <p class="col-md-4 control-group">{{ demandeConge.typeConge.libelle }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Date début :</label>
+                            <p class="col-md-4 control-group">{{ demandeConge.dateStart|date('d/m/Y') }}&nbsp;&nbsp;{{ demandeConge.dateStartAfternoon ? 'Après-midi' : '' }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Date de fin :</label>
+                            <p class="col-md-4 control-group">{{ demandeConge.dateEnd|date('d/m/Y') }}&nbsp;&nbsp;{{ demandeConge.dateEndMorning? 'à midi' : '' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Nombre de jour :</label>
+                            <p class="col-md-4 control-group">{{ demandeConge.totalDays }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Statut final de la demande :</label>
+                            <p class="col-md-4 control-group">{{ demandeConge.demandeStatus|label_status_dc }}&nbsp;&nbsp;{{ demandeConge.dateEndMorning? 'à midi' : '' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Solde réel :</label>
+                            <p class="col-md-4 control-group">{{ demandeConge.demandor.soldeReel }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Date retour :</label>
+                            <p class="col-md-4 control-group">{{ demandeConge.dateRetour|date('d/m/Y') }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Solde prévisionnel</label>
+                            <p class="col-md-4 control-group">{{ demandeConge.demandor.soldePrevisionnel }}</p>
+                        </div>
+                    </div>
+                    {% if demandeConge.document is defined and demandeConge.document|length > 0 %}
+                        <div class="col-md-12">
+                            <div class="col-md-2">
+                                <label class="control-label">Pièces Jointes :</label>
+                            </div>
+                            {% for f in demandeConge.document %}
+                                <div class="col-md-10">
+                                    <a href="{{ path('demandeconge_download_document', {'id':f.id}) }}"><i class="fa fa-upload"></i> &nbsp;{{ f.fileOriginalName }} </a>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <br/><br/>
+                    <div class="col-md-1">
+                        <label>Validateurs</label>
+                    </div>
+                    <div class="col-md-11">
+                        <table class="table table-bordered table-striped blue-header"></caption>
+                            <thead>
+                                <tr>
+                                    <th>Etape</th>
+                                    <th>Validateur</th>
+                                    <th>Etat</th>
+                                    <th>Commentaire</th>
+                                    <!--th>Modifiée par</th-->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for d in demandeConge.demandeHistoryValidation %}
+                                    <tr>
+                                        <td>{{ d.modeleWorkflowStep.libelle }}</td>
+                                        <td>{{ d.validator ? d.validator.name : '' }}</td>
+                                        <td>{{ d.validationStatus|label_status_dc }}</td>
+                                        <td>{{ d.commentaire }}</td>
+                                        {#<td>{{ d.updatedBy ? d.updatedBy.name : '' }}</td>#}
+                                    </tr>
+                                {% endfor %}
+                            <tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--List interim-->
+                <div class="col-md-12">
+                    <div class="col-md-1"><label>Interims</label></div>
+                    <div class="col-md-11">
+                        <table class="table table-bordered table-striped blue-header">
+                            <thead>
+                                <tr>
+                                    <th>Utilisateur</th>
+                                    <th>Interim</th>
+                                    <th>Interim type</th>
+                                    <th>Date début</th>
+                                    <th>Date fin</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in demandeConge.interim %}
+                                    <tr>
+                                        <td>{{ i.utilisateur.name }}</td>
+                                        <td>{{ i.interim.name }}</td>
+                                        <td>{{ i.interimType|label_interim }}</td>
+                                        <td>{{ i.fromDate|date('d/m/Y') }}</td>
+                                        <td>{{ i.toDate|date('d/m/Y') }}</td>
+                                    </tr>
+                                {% endfor %}
+                            <tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <a href="{{ path('demandeconge_index') }}">
+                    <span class="btn">
+                        <button type="button" name="retour" class="btn btn-default"><i class="fa fa-backward"></i>&nbsp;&nbsp;Retour</button>
+                    </span>
+                </a>
+
+                {% if can('transfert', app.user, demandeConge) %}
+                    <span class="btn">
+                        <button type="button" name="transferer" class="btn btn-primary" data-toggle="modal" data-target=".modal-transfert"><i class="fa fa-share"></i>&nbsp;&nbsp;Transférer la validation de demande</button>
+                    </span>
+                {% endif %}
+                {#<a href="{{ path('demandeconge_edit', { 'id': demandeConge.id }) }}">
+                    <span class="btn">
+                        <button type="button" name="editer" class="btn btn-primary"><i class="fa fa-edit"></i>&nbsp;&nbsp;Modifier</button>
+                    </span>
+                </a>
+                <span class="btn">
+                    {{ form_start(delete_form) }}
+                    <button type="submit" name="delete" class="btn btn-danger"><i class="fa fa-remove"></i>&nbsp;&nbsp;Supprimer</button>
+                    {{ form_end(delete_form) }}
+                </span>#}
+            </div>
+            <div class="box-footer">
+            </div>
+        </div>
+    </div>
+    <!-- Modal transfert validation-->
+    <div id="modal-transfert-validation" class="modal fade modal-transfert" tabindex="-1" role="dialog" aria-labelledby="exampleModalTransfert">
+        <form name="transfertFrm" method="POST" action="#" novalidate="novalidate">
+            <div class="modal-dialog" role="document" style="width: 40%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="exampleModalTransfert">Transfert de validation</h4>
+                        <div class="already-validator alert alert-danger" style="margin-bottom:0;margin-top: 9px; padding:4px;display: none; text-align: center">
+                            <strong>Erreur :</strong> Ce validateur est déjà enregistré.
+                        </div>
+                        <div class="empty-validator alert alert-danger" style="margin-bottom:0;margin-top: 9px; padding:4px;display: none; text-align: center">
+                            Veuillez selectionner un validateur!
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    {% set listUsers = listUsersBySociety() %}
+                                    <select id="transfert-to" class="form-control validator-selected select2_">
+                                        <option value="0"></option>
+                                        {% for u in listUsers %}
+                                            <option value="{{ u.id }}">{{ u.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <input type="hidden" class="form-control" id="demandeId" value="{{demandeConge.id}}"/>
+                                    <input type="hidden" id="url-transfert" value="{{ path('demandeconge_transfert_validation') }}"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <button type="button" class="btn btn-primary btn-add-validator-transfert"><i class="fa fa-plus"></i>&nbsp;&nbsp;Ajouter validateur</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer button_group button_bar">
+                        <!--button id="send-validator" type="button" class="btn btn-success btn-form icon-left" style="float: left"><i class="fa fa-check"></i>  Envoyer</button-->
+                        <button type="button" class="btn btn-default btn-form icon-left" data-dismiss="modal"><i class="fa fa-times"></i>  Annuler</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- fin modal transfert validation-->
+</section>
+{% endblock %}

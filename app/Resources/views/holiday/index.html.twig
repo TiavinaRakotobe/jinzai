@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Holiday list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Holidaydate</th>
+                <th>Holidaydescription</th>
+                <th>Id</th>
+                <th>Createdat</th>
+                <th>Updatedat</th>
+                <th>Enabled</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for holiday in holidays %}
+            <tr>
+                <td><a href="{{ path('holiday_show', { 'id': holiday.id }) }}">{{ holiday.holidayDate|date('Y-m-d') }}</a></td>
+                <td>{{ holiday.description }}</td>
+                <td>{{ holiday.id }}</td>
+                <td>{% if holiday.createdAt %}{{ holiday.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if holiday.updatedAt %}{{ holiday.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if holiday.enabled %}Yes{% else %}No{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('holiday_show', { 'id': holiday.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('holiday_edit', { 'id': holiday.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('holiday_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

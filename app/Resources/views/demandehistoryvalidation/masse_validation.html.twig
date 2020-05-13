@@ -1,0 +1,172 @@
+{% extends 'AppBundle::layout.html.twig' %}
+{% block content_body %}
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Validation demande en masse: recherche avancée</h3>
+                {% block box_tool %}
+                    {{ parent() }}
+                {% endblock %}
+            </div>
+            <div class="box-body">
+                <input type="hidden" id="ulr-masse-validation" value="{{ path('validate_bulk_validation_demande') }}"/>
+                <form id="form-masse-validation" name="masse_validation_search" action="{{ path('bulk_validation_demande') }}" method="get">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Numéro demande</label>
+                                {{ form_widget(form.numero) }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date début/fin</label>
+                                <div class="input-group">
+                                    {{ form_widget(form.dateStart) }}
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    {{ form_widget(form.dateEnd) }}
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Numéro matricule</label>
+                                {{ form_widget(form.matricule) }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Demandeur</label>
+                                {{ form_widget(form.demandor) }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Type de congé</label>
+                                {{ form_widget(form.typeConge) }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Direction</label>
+                                {{ form_widget(form.direction) }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Initiateur</label>
+                                {{ form_widget(form.initiator) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <span class="btn">
+                            <button type="submit" name="submit" class="btn btn-primary" id="submit-search-masse"><i class="fa fa-search"></i>&nbsp;&nbsp;Rechercher</button>
+                        </span>
+                        <span class="btn">
+                            <button type="button" name="reset" class="btn btn-default btn-reset"><i class="fa fa-repeat"></i>&nbsp;&nbsp;Réinitialiser</button>
+                        </span>
+                    </div>
+                    {{ form_end(form, {'render_rest': false }) }}
+                </form>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+            </div>
+        </div>
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">Résultats : {{ pagination.getTotalItemCount }} résultat(s) trouvé(s)</h3>
+                <span class="btn pull-right">
+                    <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target=".modal-confirm-masse-action"><i class="fa fa-check"></i>&nbsp;&nbsp;Lancer la validation en masse</button>
+                </span>
+            </div>
+            <div class="box-body">
+                <table id="liste-demande" class="table table-bordered table-condensed table-responsive table-striped blue-header table-hover dataTable">
+                    <thead>
+                        <tr>
+                            <th {% if pagination.isSorted('D.numero') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Numero', 'D.id') }}</th>
+                            <th {% if pagination.isSorted('UD.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Demandeur', 'UD.name') }}</th>
+                            <th {% if pagination.isSorted('UI.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Initiateur', 'UI.name') }}</th>
+                            <th {% if pagination.isSorted('T.libelle') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Type', 'T.libelle') }}</th>
+                            <th {% if pagination.isSorted('D.dateStart') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Début', 'D.dateStart') }}</th>
+                            <th {% if pagination.isSorted('D.dateEnd') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Fin', 'D.dateEnd') }}</th>
+                            <th {% if pagination.isSorted('D.totalDays') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Nbr jour', 'D.totalDays') }}</th>
+                            <th {% if pagination.isSorted('D.dateRetour') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Retour', 'D.dateRetour') }}</th>
+                                {#<th {% if pagination.isSorted('D.demandeStatus') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Statut', 'D.demandeStatus') }}</th>#}
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if pagination.getTotalItemCount > 0 %}
+                            {% for validation in pagination %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ path('demandehistoryvalidation_edit', { 'id': validation.id }) }}">{{ validation.demandeConge.numero }}</a>
+                                    </td>
+                                    <!--td>{{ validation.demandeConge.createdAt|date('d/m/Y H:i:s') }}</td-->
+                                    <td>{{ validation.demandeConge.demandor.name }}</td>
+                                    <td>{{ validation.demandeConge.initiator.name }}</td>
+                                    <td>{{ validation.demandeConge.typeConge.libelle }}</td>
+                                    <td>
+                                        {% if validation.demandeConge.dateStart %}{{ validation.demandeConge.dateStart|date('d/m/Y') }}{% endif %}
+                                        <br/>
+                                        <strong>{{ validation.demandeConge.dateStartAfternoon ? 'Après-midi':'' }}</strong>
+                                    </td>
+                                    <td>
+                                        {% if validation.demandeConge.dateEnd %}{{ validation.demandeConge.dateEnd|date('d/m/Y') }}{% endif %}
+                                        <br/>
+                                        <strong>{{ validation.demandeConge.dateEndMorning ? 'Midi':''}}</strong>
+                                    </td>
+                                    <td>{{ validation.demandeConge.totalDays }}</td>
+                                    <td>{% if validation.demandeConge.dateRetour %}{{ validation.demandeConge.dateRetour|date('d/m/Y') }}{% endif %}</td>
+                                    <td>{{ validation.demandeConge.demandeStatus|label_status_dc }}</td>
+                                    <td>
+                                        {#<a href="{{ path('demandehistoryvalidation_show', { 'id': validation.id }) }}">Détail</a>&nbsp;&nbsp;#}
+                                        <a href="{{ path('demandehistoryvalidation_edit', { 'id': validation.id }) }}">Editer</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="10" align="center">Aucune demande à valider</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+                <div class="navigation">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div id="dialog_masse_validation" title="Validation en masse" class="modal fade modal-confirm-masse-action" tabindex="-1" role="dialog" aria-labelledby="masseValidationLabel">
+        <div class="modal-dialog modal-sm1" role="document" style="width: 35%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="masseValidationLabel" style="text-align: center">Confirmation de la validation</h4>
+                </div>
+                <div class="modal-body">
+                    <p style="text-align: center">Confirmez-vous de lancer la validation en masse ?</p>
+                    <div class="modal-footer button_group">
+                        <button type="button" class="btn btn-success btn-form pull-left" id="btn-dialog-masse-validation"><i class="fa fa-check"></i> Oui</button>
+                        <button type="button" class="btn btn-default btn-form pull-right close_dialog annuler" data-dismiss="modal"><i class="fa fa-times"></i> Non</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

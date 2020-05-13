@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Holiday</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Holidaydate</th>
+                <td>{% if holiday.holidayDate %}{{ holiday.holidayDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ holiday.description }}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ holiday.id }}</td>
+            </tr>
+            <tr>
+                <th>Createdat</th>
+                <td>{% if holiday.createdAt %}{{ holiday.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Updatedat</th>
+                <td>{% if holiday.updatedAt %}{{ holiday.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Enabled</th>
+                <td>{% if holiday.enabled %}Yes{% else %}No{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('holiday_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('holiday_edit', { 'id': holiday.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

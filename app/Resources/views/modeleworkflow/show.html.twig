@@ -1,0 +1,65 @@
+{% extends 'AppBundle::layout.html.twig' %}
+{% block content_body %}
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Détail workflow</h3>
+            {% block box_tool %}{% endblock %}
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>Libellé</th>
+                                <td> : {{ modeleWorkflow.libelle }}</td>
+                            </tr>
+                            <tr>
+                                <th>Description</th>
+                                <td> : {{ modeleWorkflow.description }}</td>
+                            </tr>
+                            <tr>
+                                <th>Crée le</th>
+                                <td> : {% if modeleWorkflow.createdAt %}{{ modeleWorkflow.createdAt|date('d/m/Y H:i:s') }}{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <th>Modifié le</th>
+                                <td> : {% if modeleWorkflow.updatedAt %}{{ modeleWorkflow.updatedAt|date('d/m/Y H:i:s') }}{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <th>Activé</th>
+                                <td> : {% if modeleWorkflow.enabled %}<i class="fa fa-check-circle blue"></i>{% else %}<i class="fa fa-times-circle red"></i>{% endif %}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12">
+                    {% include ':modeleworkflow:steps.html.twig' with { 'steps':modeleWorkflow.modeleWorkflowSteps } %}
+                </div>
+                <div class="btn-group">
+                    <a href="{{ path('modeleworkflow_index') }}">
+                        <span class="btn">
+                            <button type="button" name="retour" class="btn btn-default"><i class="fa fa-backward"></i>&nbsp;&nbsp;Retour</button>
+                        </span>
+                    </a>
+                    <a href="{{ path('modeleworkflow_edit', { 'id': modeleWorkflow.id }) }}">
+                        <span class="btn">
+                            <button type="button" name="editer" class="btn btn-primary"><i class="fa fa-edit"></i>&nbsp;&nbsp;Modifier</button>
+                        </span>
+                    </a>
+                    <a>
+                        <span class="btn">
+                            {{ form_start(delete_form) }}
+                            <button type="submit" name="delete" class="btn btn-danger"><i class="fa fa-remove"></i>&nbsp;&nbsp;Supprimer</button>
+                            {{ form_end(delete_form) }}
+                        </span>
+                    </a>
+                </div>
+                <div class="box-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

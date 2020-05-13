@@ -1,0 +1,162 @@
+{% extends 'AppBundle::layout.html.twig' %}
+{% block content_body %}
+    <section class="content">
+        <div class="box box-default collapsed-box_">
+            <div class="box-header with-border">
+                <h3 class="box-title">Demande congé : recherche avancée</h3>
+                {% block box_tool %}
+                    {#{ parent() }#}
+                    <!--div class="pull-right box-tools">
+                        <button type="button" class="btn btn-primary btn-sm pull-right" data-widget="collapse"
+                                data-toggle="tooltip" title="Collapse" style="margin-right: 5px;">
+                            <i class="fa fa-plus"></i></button>
+                    </div-->
+                {% endblock %}
+            </div>
+            <div class="box-body">
+                <form action="{{ path('demandeconge_index') }}" method="post">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Numéro demande</label>
+                                {{ form_widget(form.numero) }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date début/fin</label>
+                                <div class="input-group">
+                                    {{ form_widget(form.dateStart) }}
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    {{ form_widget(form.dateEnd) }}
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Numéro matricule</label>
+                                {{ form_widget(form.matricule) }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Demandeur</label>
+                                {{ form_widget(form.demandor) }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Type de congé</label>
+                                {{ form_widget(form.typeConge) }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Direction</label>
+                                {{ form_widget(form.direction) }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Initiateur</label>
+                                {{ form_widget(form.initiator) }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Statut</label>
+                                {{ form_widget(form.demandeStatus) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <span class="btn">
+                            <button type="submit" name="submit" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp;&nbsp;Rechercher</button>
+                        </span>
+                        <span class="btn">
+                            <button type="button" name="reset" class="btn btn-default btn-reset"><i class="fa fa-repeat"></i>&nbsp;&nbsp;Réinitialiser</button>
+                        </span>
+                        <span class="btn">
+                            <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target=".modal-field-to-export" id="btn-export-dc"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp;Exporter</button>
+                        </span>
+                    </div>
+
+                    {{ form_end(form) }}
+                </form>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+            </div>
+        </div>
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">Résultats : {{ pagination.getTotalItemCount }} résultat(s) trouvé(s)</h3>
+            </div>
+            <div class="box-body">
+                <table id="liste-demande" class="table table-bordered table-condensed table-responsive table-striped blue-header table-hover dataTable table-sm" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th {% if pagination.isSorted('D.numero') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Numero', 'D.id') }}</th>
+                            <!--th>Crée le</th-->
+                            <th class="th-sm" {% if pagination.isSorted('UD.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Demandeur', 'UD.name') }}</th>
+                            <th class="th-sm" {% if pagination.isSorted('UI.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Initiateur', 'UI.name') }}</th>
+                            <th class="th-sm" {% if pagination.isSorted('UI.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Type congé', 'T.libelle') }}</th>
+                            <th class="th-sm" {% if pagination.isSorted('D.dateStart') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Début', 'D.dateStart') }}</th>
+                            <th class="th-sm" {% if pagination.isSorted('D.dateEnd') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Fin', 'D.dateEnd') }}</th>
+                            <th class="th-sm" {% if pagination.isSorted('D.totalDays') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Nbr jour', 'D.totalDays') }}</th>
+                            <th class="th-sm" {% if pagination.isSorted('D.dateRetour') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Retour', 'D.dateRetour') }}</th>
+                            <th class="th-sm" {% if pagination.isSorted('D.demandeStatus') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Statut', 'D.demandeStatus') }}</th>
+                            <th>Actions</th>
+                    </thead>
+                    <tbody>
+                        {% if pagination.getTotalItemCount > 0 %}
+                            {% for demandeConge in pagination %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ path('demandeconge_show', { 'id': demandeConge.id }) }}">{{ demandeConge.numero }}</a>
+                                    </td>
+                                    <!--td>{{ demandeConge.createdAt|date('d/m/Y H:i:s') }}</td-->
+                                    <td>{{ demandeConge.demandor.name }}</td>
+                                    <td>{{ demandeConge.initiator.name }}</td>
+                                    <td>{{ demandeConge.typeConge.libelle }}</td>
+                                    <td>
+                                        {% if demandeConge.dateStart %}{{ demandeConge.dateStart|date('d/m/Y') }}{% endif %}
+                                        <br/>
+                                        <strong>{{ demandeConge.dateStartAfternoon ? 'Après-midi':'' }}</strong>
+                                    </td>
+                                    <td>
+                                        {% if demandeConge.dateEnd %}{{ demandeConge.dateEnd|date('d/m/Y') }}{% endif %}
+                                        <br/>
+                                        <strong>{{ demandeConge.dateEndMorning ? 'Midi':''}}</strong>
+                                    </td>
+                                    <td>{{ demandeConge.totalDays }}</td>
+                                    <td>{% if demandeConge.dateRetour %}{{ demandeConge.dateRetour|date('d/m/Y') }}{% endif %}</td>
+                                    <td>{{ demandeConge.demandeStatus|label_status_dc }}</td>
+                                    <td>
+                                        <a href="{{ path('demandeconge_show', { 'id': demandeConge.id }) }}">Détail</a>&nbsp;&nbsp;
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="9" align="center">Aucun résultat trouvé</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+                <div class="navigation">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+                {% include ':demandeconge:dialogExport.html.twig' %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,43 @@
+security:
+    encoders:
+        Admin\UserBundle\Entity\Utilisateur: sha1
+        #FOS\UserBundle\Entity\User: sha1
+
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_ASSISTANT:   ROLE_USER
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
+
+    providers:
+        fos_userbundle:
+            id: fos_user.user_provider.username_email
+        in_memory:
+            memory: ~
+
+    firewalls:
+        admin:
+            pattern: ^/
+            form_login:
+                provider: fos_userbundle
+                csrf_provider: form.csrf_provider
+                check_path: fos_user_security_check
+                login_path: fos_user_security_login
+                use_referer: false
+                # login success redirecting options (read further below)
+                default_target_path: demandeconge_index
+                always_use_default_target_path: false
+                check_path: /login_check
+                # login failure redirecting options (read further below)
+                failure_path: null
+                failure_forward: false
+                # Is a previous session required ?
+                require_previous_session: false
+
+            logout:
+                path: fos_user_security_logout
+                target: fos_user_security_login
+            anonymous: ~
+
+    access_control:
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin, role: ROLE_USER }

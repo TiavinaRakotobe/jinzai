@@ -1,0 +1,49 @@
+{% extends 'AppBundle::layout.html.twig' %}
+{% block content_body %}
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Jours feriés</h3>
+                {% block box_tool %}
+                    {{ parent() }}
+                {% endblock %}
+            </div>
+            <div class="box-body">
+            </div>
+        </div>
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">Résultats : {{ joursFeries|length }} résultat(s) trouvé(s)</h3>
+            </div>
+            <a href="{{ path('joursferies_edit', {'id': null }) }}">
+                <span class="btn">
+                    <button type="button" name="new" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;&nbsp;Ajouter nouveau</button></span>
+            </a>
+            <div class="box-body">
+                <table id="liste-jf" class="table table-bordered table-condensed table-responsive table-striped blue-header">
+                    <thead>
+                        <tr>
+                            <th>Jours ferié</th>
+                            <th>Description</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for j in joursFeries %}
+                            <tr>
+                                <td><a href="{{ path('joursferies_show', { 'id': j.id }) }}">{{ j.joursFeriesDate|date('d/m/Y') }}</a></td>
+                                <td>{{ j.description }}</td>
+                                <td align="center">{% if j.enabled %}<i class="fa fa-check-circle blue"></i>{% else %}<i class="fa fa-times-circle red"></i>{% endif %}</td>
+                                <td>
+                                    <a href="{{ path('joursferies_show', { 'id': j.id }) }}">show</a>
+                                    <a href="{{ path('joursferies_edit', { 'id': j.id }) }}">edit</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+{% endblock %}

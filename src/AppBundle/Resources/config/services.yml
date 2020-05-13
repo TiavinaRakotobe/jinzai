@@ -1,0 +1,4 @@
+services:
+    #common.service:
+    #    class: AppBundle\Services\CommonService
+    #    arguments: [@service_container]

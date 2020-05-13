@@ -1,0 +1,177 @@
+{% extends 'AppBundle::layout.html.twig' %}
+{% block content_body %}
+    <section class="content">
+
+        <form id="form-dc-create" method="post" action="" {{ form_enctype(form) }} novalidate="novalidate">
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Création demande de congé</h3>
+                    {% block box_tool %}{{ parent() }}{% endblock %}
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                {{ form_label(form.typeConge) }}
+                                {{ form_widget(form.typeConge) }}
+                                {{ form_errors(form.typeConge) }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {{ form_label(form.dateStart) }}
+                                <div class="input-group">
+                                    {{ form_widget(form.dateStart) }}
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                </div>
+                                {{ form_errors(form.dateStart) }}
+                            </div>
+                        </div>
+                        <div class="col-md-2 checkbox-half-day">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="btn-group btn-chekbox" data-toggle="buttons">
+                                        {#{ form_label(form.dateStartMorning) }#}
+                                        <label class="btn btn-default" for="demande_conge_dateStartMorning">
+                                            {{ form_widget(form.dateStartMorning) }}Matin
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="btn-group btn-chekbox" data-toggle="buttons">
+                                        {#{ form_label(form.dateStartAfternoon) }#}
+                                        <label class="btn btn-default" for="demande_conge_dateStartAfternoon">
+                                            {{ form_widget(form.dateStartAfternoon) }}Midi
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {{ form_label(form.dateEnd) }}
+                                <div class="input-group">
+                                    {{ form_widget(form.dateEnd) }}
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                </div>
+                                {{ form_errors(form.dateEnd) }}
+                            </div>
+                        </div>
+                        <div class="col-md-2 checkbox-half-day">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="btn-group btn-chekbox" data-toggle="buttons">
+                                        {#{ form_label(form.dateEndMorning) }#}
+                                        <label class="btn btn-default" for="demande_conge_dateEndMorning">
+                                            {{ form_widget(form.dateEndMorning) }}Matin
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="btn-group btn-chekbox" data-toggle="buttons">
+                                        {#{ form_label(form.dateEndAfternoon) }#}
+                                        <label class="btn btn-default" for="demande_conge_dateEndAfternoon">
+                                            {{ form_widget(form.dateEndAfternoon) }}Midi
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form_label(form.totalDays) }}
+                                {{ form_widget(form.totalDays) }}
+                                {{ form_errors(form.totalDays) }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form_label(form.dateRetour) }}
+                                <div class="input-group">
+                                    {{ form_widget(form.dateRetour) }}
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form_label(form.demandor) }}
+                                {{ form_widget(form.demandor) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <a href="#" id="ajout_interim"><i class="fa fa-plus"></i>&nbsp;&nbsp;Ajouter interim</a>
+                            </div>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="interim" id="interim" data-prototype="<tr>
+                                 <td>{{ form_widget(form.interim.vars.prototype.interim)|e('html_attr') }}</td>
+                                 <td>{{ form_widget(form.interim.vars.prototype.fromDate)|e('html_attr') }}</td>
+                                 <td>{{ form_widget(form.interim.vars.prototype.toDate)|e('html_attr') }}</td>
+                                 <td>{{ form_widget(form.interim.vars.prototype.interimType)|e('html_attr') }}</td>
+                                 </tr>">
+                                <table class="table table-bordered blue-header table-interim" >
+                                    <thead>
+                                        <tr>
+                                            <th>Interim</th>
+                                            <th>Date début</th>
+                                            <th>Date de fin</th>
+                                            <th>Type</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <input type="hidden" id="url-date-retour" value="{{ path('demandeconge_date_retour') }}"/>
+                        <input type="hidden" id="url-total-days" value="{{ path('demandeconge_total_days') }}"/>
+                        <input type="hidden" id="url-check-date" value="{{ path('demandeconge_check_date') }}"/>
+                        <!--/div-->
+                    </div>
+                    <!-- pièce jointe -->
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <a href="#" id="ajout_document"><i class="fa fa-plus"></i>&nbsp;&nbsp;Ajouter pièces jointes</a>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="document" id="document" data-prototype="{{ form_widget(form.document.vars.prototype.fichier)|e('html_attr') }}">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end pièce jointe -->
+                    {{ form_end(form) }}
+                    <div class="btn-group">
+                        <span class="btn">
+                            <button type="button" name="btn-create-dc" class="btn btn-primary" id="btn-save-dc" disabled="disabled"><i class="fa fa-save"></i>&nbsp;&nbsp;Enregistrer</button>
+                        </span>
+                        <a href="{{ path('demandeconge_index') }}">
+                            <span class="btn">
+                                <button type="button" name="retour" class="btn btn-default"><i class="fa fa-backward"></i>&nbsp;&nbsp;Retour à la liste</button></span>
+                        </a>
+                    </div>
+                </div>
+                <div class="box-footer">
+                </div>
+            </div>
+        </form>
+        <!-- /.box -->
+    </section>
+{% endblock %}

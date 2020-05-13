@@ -1,0 +1,30 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block title %}
+    {% if status_code == '404' %}
+        {{ parent() }} | 404 Page introuvable
+    {% elseif status_code == '403' %}
+        {{ parent() }} | 403 Accès refusé
+    {% else %}
+        Une erreur est survenue. ({{ status_code }})
+    {% endif %}
+{% endblock %}
+
+{% block content_body %}
+    {% if status_code == '404' %}
+        <div style="margin-left: 350px; margin-top: 100px;">
+            <h1>404 Page introuvable</h1>
+            <p>Le lien que vous avez suivi peut être incorrect ou la page peut avoir été supprimée.</p>
+        </div>
+    {% elseif status_code == '403' %}
+        <div style="text-align: center; margin-top: 100px;">
+            <h1>403 Accès refusé</h1>
+            <p>Vous ne pouvez pas accéder à cette page.</p>
+        </div>
+    {% else %}
+        <div style="margin-left: 350px; margin-top: 100px;">
+            <h1>500 Erreur du serveur</h1>
+            <p>Une erreur serveur est survenue lors de traitement de l'action {{ status_text }}</p>
+        </div>
+    {% endif %}
+{% endblock %}

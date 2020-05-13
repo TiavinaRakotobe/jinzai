@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>ModeleWorkflowStepsValidator list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Createdat</th>
+                <th>Updatedat</th>
+                <th>Enabled</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for modeleWorkflowStepsValidator in modeleWorkflowStepsValidators %}
+                <tr>
+                    <td><a href="{{ path('modeleworkflowstepsvalidator_show', { 'id': modeleWorkflowStepsValidator.id }) }}">{{ modeleWorkflowStepsValidator.id }}</a></td>
+                    <td>{% if modeleWorkflowStepsValidator.createdAt %}{{ modeleWorkflowStepsValidator.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>{% if modeleWorkflowStepsValidator.updatedAt %}{{ modeleWorkflowStepsValidator.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>{% if modeleWorkflowStepsValidator.enabled %}Yes{% else %}No{% endif %}</td>
+                    <td>
+                        <ul>
+                            <li>
+                                <a href="{{ path('modeleworkflowstepsvalidator_show', { 'id': modeleWorkflowStepsValidator.id }) }}">show</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('modeleworkflowstepsvalidator_edit', { 'id': modeleWorkflowStepsValidator.id }) }}">edit</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('modeleworkflowstepsvalidator_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

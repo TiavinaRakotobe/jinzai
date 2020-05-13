@@ -1,0 +1,16 @@
+{% extends 'AppBundle::layout.html.twig' %}
+{% block content_body %}
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Gestion utilisateur : résultat de recherche</h3>
+                {% block box_tool %}
+                    {{ parent() }}
+                {% endblock %}
+            </div>
+            <div class="box-body">
+                <p>Aucun résultat trouvé pour la matricule <strong>{{ app.request.get('matricule') }}</strong></p>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'AppBundle::layout.html.twig' %}
+{% block content_body %}
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Direction</h3>
+                {% block box_tool %}
+                    {{ parent() }}
+                {% endblock %}
+            </div>
+            <div class="box-body">
+            </div>
+        </div>
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">Résultats : {{ directions|length }} résultat(s) trouvé(s)</h3>
+            </div>
+            <a href="{{ path('direction_edit', {'id': null }) }}">
+                <span class="btn">
+                    <button type="button" name="new" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;&nbsp;Ajouter nouveau</button></span>
+            </a>
+            <div class="box-body">
+                <table id="liste-direction" class="table table-bordered table-condensed table-responsive table-striped blue-header">
+                    <thead>
+                        <tr>
+                            <th>Sigle</th>
+                            <th>Libelle</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for direction in directions %}
+                            <tr>
+                                <td><a href="{{ path('direction_show', { 'id': direction.id }) }}">{{ direction.sigle }}</a></td>
+                                <td>{{ direction.libelle }}</td>
+                                <td align="center">{% if direction.enabled %}<i class="fa fa-check-circle blue"></i>{% else %}<i class="fa fa-times-circle red"></i>{% endif %}</td>
+                                <td>
+                                    <a href="{{ path('direction_show', { 'id': direction.id }) }}">show</a>
+                                    <a href="{{ path('direction_edit', { 'id': direction.id }) }}">edit</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,85 @@
+<!-- Modal -->
+<div id="dialog_export" title="Export" class="modal fade modal-field-to-export" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog modal-sm1" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div id="close-error-popup" class="alert alert-danger" role="alert" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; display:none; background-color: #F2DEDE; border-color: #F2DEDE; width: 409px;height:32px; color: #ff0000; text-align: center; vertical-align:middle; margin-left: 0px;">
+                </div>
+                <h4 class="modal-title" id="exampleModalLabel">Exportation en excel</h4>
+            </div>
+            <p style="text-align: center;">Choisir les informations que l'on souhaite exporter, parmis :</p>
+            <div class="modal-body">
+                <form id="exportCsvFrm" action="{{ path('demandeconge_export_xls') }}" method="post">
+                    <div class="btn-group btn-chekbox" data-toggle="buttons">
+                        <label class="btn btn-default" for="info_numero">
+                            <input type="checkbox" name="info_numero" id="info_numero" value="1"> Numéro
+                            <input type="hidden" name="numero_dc" id="numero-dc" value=""/>
+                        </label>
+                        <label class="btn btn-default" for="info_date">
+                            <input type="checkbox" name="info_date" id="info_date" value="1">Date
+                        </label>
+                        <label class="btn btn-default" for="info_matricule">
+                            <input type="checkbox" checked="checked" name="info_matricule" id="info_matricule" value="1">Matricule
+                            <input type="hidden" name="matricule_dc" id="matricule-dc" value=""/>
+                            <input type="hidden" name="initiator_dc" id="initiator-dc" value=""/>
+                        </label>
+                        <label class="btn btn-default" for="info_datedebut">
+                            <input type="checkbox" name="info_datedebut" id="info_datedebut" value="1">Date début
+                            <input type="hidden" name="datedebut_dc" id="date-debut-dc" value=""/>
+                        </label>
+                        <label class="btn btn-default" for="info_datedebutdj">
+                            <input type="checkbox" name="info_datedebutdj" id="info_datedebutdj" value="1">1/2J début
+                        </label>
+                        <label class="btn btn-default" for="info_datefin">
+                            <input type="checkbox" name="info_datefin" id="info_datefin" value="1">Date fin
+                            <input type="hidden" name="datefin_dc" id="date-fin-dc" value=""/>
+
+                        </label>
+                    </div>
+                    <div class="btn-group btn-chekbox" data-toggle="buttons">
+                        <label class="btn btn-default" for="info_datefindj">
+                            <input type="checkbox" name="info_datefindj" id="info_datefindj" value="1"> 1/2J fin
+                        </label>
+                        <label class="btn btn-default" for="info_nombrejourpris">
+                            <input type="checkbox" name="info_nombrejourpris" id="info_nombrejourpris" value="1">Nombre de Jour
+                        </label>
+                        <label class="btn btn-default" for="info_demandeur">
+                            <input type="checkbox" checked="checked" name="info_demandeur" id="info_demandeur" value="1">Demandeur
+                            <input type="hidden" name="demandor_dc" id="demandor-dc" value=""/>
+                        </label>
+                        <label class="btn btn-default" for="info_direction">
+                            <input type="checkbox" name="info_direction" id="info_direction" value="1">Direction
+                            <input type="hidden" name="direction_dc" id="direction-dc" value=""/>
+                        </label>
+                        <label class="btn btn-default" for="info_etat">
+                            <input type="checkbox" name="info_etat" id="info_etat" value="1">Etat
+                            <input type="hidden" name="etat_dc" id="etat-dc" value=""/>
+                        </label>
+                    </div>
+                    <div class="btn-group btn-chekbox" data-toggle="buttons">
+                        <label class="btn btn-default" for="info_typeconge">
+                            <input type="checkbox" name="info_typeconge" id="info_typeconge" value="1">Type de congé
+                            <input type="hidden" name="type_dc" id="type-dc" value=""/>
+                        </label>
+                        <label class="btn btn-default" for="info_societe">
+                            <input type="checkbox" name="info_societe" id="info_societe" value="1">Société
+                            <input type="hidden" name="societe_dc" id="societe-dc" value=""/>
+                        </label>
+                        <label class="btn btn-default" for="info_soldereel">
+                            <input type="checkbox" checked="checked" name="info_soldereel" id="info_soldereel" value="1">Solde Réel
+                            <input type="hidden" name="soldereel_dc" id="solde-reel-dc" value=""/>
+                            <input type="hidden" name="sort_field" value="{{ app.request.get('sort', '') }}"/>
+                            <input type="hidden" name="sort_direction" value="{{ app.request.get('direction', '') }}"/>
+                        </label>
+                    </div>
+                    <div class="modal-footer button_group button_bar">
+                        <button type="submit" class="btn btn-success btn-form icon-left" id="dialog-export-btn"><i class="fa fa-check"></i> Exporter</button>
+                        <button type="button" class="btn btn-default btn-form icon-left close_dialog annuler" data-dismiss="modal"><i class="fa fa-times"></i> Annuler</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

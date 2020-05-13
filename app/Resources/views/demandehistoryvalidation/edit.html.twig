@@ -1,0 +1,165 @@
+{% extends 'AppBundle::layout.html.twig' %}
+{% set canValidate = can('validate', app.user, demandeHistoryValidation.demandeConge) %}
+
+{% block content_body %}
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Validation de la demande</h3>
+            {% block box_tool %}{% endblock %}
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Numéro demande :</label>
+                            <p class="col-md-4 control-group">{{ demandeHistoryValidation.demandeConge.numero }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Date création :</label>
+                            <p class="col-md-4 control-group">{{ demandeHistoryValidation.demandeConge.createdAt|date('Y-m-d H:i:s') }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Crée par :</label>
+                            <p class="col-md-4 control-group">{{ demandeHistoryValidation.demandeConge.initiator.name }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Démandeur :</label>
+                            <p class="col-md-4 control-group">{{ demandeHistoryValidation.demandeConge.demandor.name }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Matricule :</label>
+                            <p class="col-md-4 control-group">{{ demandeHistoryValidation.demandeConge.demandor.matricule }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Type de congé :</label>
+                            <p class="col-md-4 control-group">{{ demandeHistoryValidation.demandeConge.typeConge.libelle }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Date début :</label>
+                            <p class="col-md-4 control-group">{{ demandeHistoryValidation.demandeConge.dateStart|date('d/m/Y') }}&nbsp;&nbsp;{{ demandeHistoryValidation.demandeConge.dateStartAfternoon ? 'Après-midi' : '' }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Date de fin :</label>
+                            <p class="col-md-4 control-group">{{ demandeHistoryValidation.demandeConge.dateEnd|date('d/m/Y') }}&nbsp;&nbsp;{{ demandeHistoryValidation.demandeConge.dateEndMorning? 'à midi' : '' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Nombre de jour :</label>
+                            <p class="col-md-4 control-group">{{ demandeHistoryValidation.demandeConge.totalDays }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Statut final de la demande :</label>
+                            <p class="col-md-4 control-group">{{ demandeHistoryValidation.demandeConge.demandeStatus|label_status_dc }}&nbsp;&nbsp;{{ demandeHistoryValidation.demandeConge.dateEndMorning ? 'à midi' : '' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Solde réel :</label>
+                            <p class="col-md-4 control-group">{{ demandeHistoryValidation.demandeConge.demandor.soldeReel }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Date retour :</label>
+                            <p class="col-md-4 control-group">{{ demandeHistoryValidation.demandeConge.dateRetour|date('d/m/Y') }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-group">Solde prévisionnel</label>
+                            <p class="col-md-4 control-group">{{ demandeHistoryValidation.demandeConge.demandor.soldePrevisionnel }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <table class="table table-bordered table-striped blue-header">
+                        <caption>Validateurs de la demande</caption>
+                        <thead>
+                            <tr>
+                                <th>Etape</th>
+                                <th>Validateur</th>
+                                <th>Etat</th>
+                                <th>Commentaire</th>
+                                <!--th>Modifiée par</th-->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ demandeHistoryValidation.modeleWorkflowStep.libelle }}</td>
+                                <td>
+                                    {% if validatorsStep is defined and validatorsStep|length > 0 %}
+                                        {% for v in validatorsStep %}
+                                            {{ v.validator.name }} <br/>
+                                        {% endfor %}
+                                    {% else %}
+                                        {{ demandeHistoryValidation.validator ? demandeHistoryValidation.validator.name : '' }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ demandeHistoryValidation.validationStatus|label_status_dc }}</td>
+                                <td>{{ demandeHistoryValidation.commentaire }}</td>
+                                {#<td>{{ demandeHistoryValidation.updatedBy ? demandeHistoryValidation.updatedBy.name : '' }}</td>#}
+                            </tr>
+                        <tbody>
+                    </table>
+                </div>
+            </div>
+            {% if canValidate%}
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+            {% else %}
+                <div class="alert alert-error" role="alert" style="text-align:center;">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    Vous devez attendre votre manager pour valider cette demande
+                </div>
+            {% endif %}
+            <div class="btn-group">
+                {% if canValidate and demandeHistoryValidation.demandeConge.demandeStatus == constant('AppBundle\\Constants\\GestionCongeConstant::CONGE_STATUS_INPROGRESS') %}
+                    <span class="btn">
+                        <button type="button" name="validate" data-status="{{constant('AppBundle\\Constants\\GestionCongeConstant::CONGE_STATUS_VALIDATED')}}" class="btn btn-success btn-validate"><i class="fa fa-check"></i>&nbsp;&nbsp;Valider
+                        </button>
+                    </span>
+                    <span class="btn">
+                        <button type="button" name="refus" data-status="{{constant('AppBundle\\Constants\\GestionCongeConstant::CONGE_STATUS_REFUSED')}}" class="btn btn-danger btn-refus"><i class="fa fa-remove"></i>&nbsp;&nbsp;Réfuser
+                        </button>
+                    </span>
+                {% endif %}
+                <a href="{{ path('demandehistoryvalidation_index') }}">
+                    <span class="btn">
+                        <button type="button" name="retour" class="btn btn-default btn-retour"><i class="fa fa-backward"></i>&nbsp;&nbsp;Retour</button>
+                    </span>
+                </a>
+            </div>
+            {% if canValidate%}
+                {{ form_end(form) }}
+            {% endif %}
+            <div class="box-footer">
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

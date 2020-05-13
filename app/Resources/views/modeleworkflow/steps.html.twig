@@ -1,0 +1,90 @@
+
+<table class="table table-bordered table-striped blue-header table-step">
+    <caption>Liste des étapes</caption>
+    <thead>
+        <tr>
+            <th>Libellé</th>
+            <th>Ordre</th>
+            <th width="30%">Actions</th>
+        </tr>
+    <tbody>
+        {% if steps is defined and steps|length > 0 %}
+            {% for step in steps %}
+                <tr class="step-{{ step.id }}">
+                    <td>{{ step.libelle }}</td>
+                    <td>{{ step.stepOrder }}</td>
+                    <td>
+                        <div class="btn-group">
+                            {% if step.validationType == constant('AppBundle\\Constants\\GestionCongeConstant::CUSTOM_VALIDATION') %}
+                                <a href="#" class="dropdown-toggle" data-toggle="modal" data-target="#modal-step-{{ step.id }}">Ajout validateur</a>
+                                <div class="modal fade" id="modal-step-{{ step.id }}">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title">{{ step.libelle }}</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-sm-8">
+                                                        {% set listUsers = listUsersBySociety() %}
+                                                        <select class="form-control validator-selected">
+                                                            <option value="0">---- Sélectionner un validateur ----</option>
+                                                            {% for u in listUsers %}
+                                                                <option value="{{ u.id }}">{{ u.name }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                        <input type="hidden" class="input-validator-id" value="" data-name=""/>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <button type="button" class="btn btn-primary btn-add-validator" data-step="{{ step.id }}" data-url="{{ path('ajax_modeleworkflowstepsvalidator_add') }}"><i class="fa fa-plus"></i>&nbsp;&nbsp;Ajouter validateur</button>
+                                                    </div>
+                                                </div>
+                                                <br/>
+                                                <table width="100%" class="table table-bordered table-condensed table-responsive table-striped blue-header table-step-validator-{{ step.id }}">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Validateur</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% set validatorsList = getValidatorStep(step.id) %}
+                                                        {% if validatorsList|length >0 %}
+                                                            {% for v in validatorsList %}
+                                                                <tr class="row-{{v.id}}">
+                                                                    <td>{{ v.validator.name }}</td>
+                                                                    <td><a href="javascript://" data-id="{{ v.id }}" class="remove-validator-step">Supprimer</a></td>
+                                                                    <!-- url remove validator step -->
+                                                            <input type="hidden" value="{{ path('ajax_modeleworkflowstepsvalidator_delete') }}" class="url-remove-validator-step"/>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-success pull-left" data-dismiss="modal"><i class="fa fa-check"></i>&nbsp;&nbsp;OK</button>
+                                                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Fermer</button>
+                                            </div>
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
+                            {% endif %}
+                            <!-- /.modal -->
+                        </div>
+                        <a href="#" data-id="{{ step.id }}" data-url="{{ path('ajax_modeleworkflow_delete_step') }}" data-refresh-url="" class="remove-step">&nbsp;&nbsp;&nbsp;Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="3">Aucun résultat trouvé</td>
+            </tr>
+        {% endif %}
+    </tbody>
+</thead>
+</table>
